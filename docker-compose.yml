@@ -15,9 +15,17 @@ services:
 
   web:
     image: user-mysql
+    restart: always
     depends_on:
      - db
     ports:
      - 8080:8080
+
+  frontend:
+   image: angular-image
+   depends_on:
+    - web
+   ports:
+    - 4200:4200
 
 
