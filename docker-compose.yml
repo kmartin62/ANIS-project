@@ -14,17 +14,19 @@ services:
       MYSQL_ROOT_PASSWORD: password
 
   web:
-    image: user-mysql
-    restart: always
+    image: kmartin62/user-mysql:1
+    restart: on-failure
+    container_name: spring-api
+    build: .
     depends_on:
      - db
     ports:
      - 8080:8080
 
+
   frontend:
-   image: angular-image
-   depends_on:
-    - web
+   image: kmartin62/angular-image:1 
+   container_name: angular-frontend
    ports:
     - 4200:4200
 
