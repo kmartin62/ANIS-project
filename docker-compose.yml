@@ -1,4 +1,4 @@
-version: '3'
+version: '2.1'
 
 services:
 
@@ -12,6 +12,12 @@ services:
       MYSQL_USER: sa
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: password
+    healthcheck:
+     test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+     interval: 3s
+     timeout: 1s
+     retries: 5
+
 
   web:
     image: kmartin62/user-mysql:1
@@ -19,7 +25,8 @@ services:
     container_name: spring-api
     build: .
     depends_on:
-     - db
+     db:
+       condition: service_healthy
     ports:
      - 8080:8080
 
