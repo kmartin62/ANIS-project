@@ -1,0 +1,29 @@
+- name: Run using a project directory
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+
+    - docker_container:
+       name: mysql-standalone
+       restart_policy: always
+       image: 'mysql'
+       env:
+         MYSQL_DATABASE: dockerservice
+         MYSQL_USER: sa
+         MYSQL_PASSWORD: password
+         MYSQL_ROOT_PASSWORD: password
+
+    - docker_container:
+       name: spring-api
+       image: 'kmartin62/user-mysql:1'
+       published_ports:
+         - "8080:8080"
+       expose:
+         8080
+
+    - docker_container:
+       name: angular-frontend
+       image: 'kmartin62/angular-image:1'
+       published_ports:
+         - "4200:4200"

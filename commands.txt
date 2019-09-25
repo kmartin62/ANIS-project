@@ -1,7 +1,0 @@
- 1803  sudo docker pull mysql:latest
- 2119  sudo docker run --name mysql-standalone -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=dockerservice -e MYSQL_USER=sa -e MYSQL_PASSWORD=password -d mysql:latest
- 2120  sudo docker container ls
- 2121  sudo docker run -p 8080:8080 --name user-mysql --link mysql-standalone:mysql -d user-mysql
- 2124  sudo docker container ls
- 2126  sudo docker container ls
- 2127  sudo docker logs user-mysql
