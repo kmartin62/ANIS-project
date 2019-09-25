@@ -1,0 +1,42 @@
+version: '2.1'
+
+services:
+
+  db:
+    image: mysql
+    volumes:
+      - /var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    container_name: mysql-standalone
+    environment:
+      MYSQL_DATABASE: dockerservice
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    healthcheck:
+     test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+     interval: 3s
+     timeout: 1s
+     retries: 5
+
+
+  web:
+    image: kmartin62/user-mysql:1
+    restart: on-failure
+    container_name: spring-api
+    build: .
+    depends_on:
+     db:
+       condition: service_healthy
+    ports:
+     - 8080:8080
+
+
+  frontend:
+   image: kmartin62/angular-image:1 
+   container_name: angular-frontend
+   ports:
+    - 4200:4200
+
+
